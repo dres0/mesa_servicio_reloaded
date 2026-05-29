@@ -51,7 +51,7 @@ jobs:
           api_location: ""
           output_location: ""
           skip_app_build: true
-          app_artifact_location: "apps/portal/.next/standalone"
+          app_artifact_location: ".next/standalone"
 
   close_pull_request_job:
     if: github.event_name == 'pull_request' && github.event.action == 'closed'
