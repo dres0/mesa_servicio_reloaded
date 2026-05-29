@@ -19,39 +19,39 @@ jobs:
         with:
           submodules: true
           lfs: false
-        # NUEVOS PASOS AQUÍ
+
+      # 1. Instalar pnpm
       - name: Install pnpm
         uses: pnpm/action-setup@v2
         with:
           version: 8
-      
+
+      # 2. Configurar Node.js 22
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: 22
           cache: 'pnpm'
-      
+
+      # 3. Instalar dependencias y construir el portal (genera .next/standalone)
       - name: Install and Build
         run: |
           pnpm install
           cd apps/portal && pnpm build
-            # CONTINÚA EL PASO ORIGINAL
-      # CONTINÚA EL PASO ORIGINAL
+
+      # 4. Desplegar en Azure Static Web Apps sin compilación automática
       - name: Build And Deploy
         id: builddeploy
         uses: Azure/static-web-apps-deploy@v1
         with:
           azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_HAPPY_ISLAND_0D7492110 }}
-          repo_token: ${{ secrets.GITHUB_TOKEN }} # Used for Github integrations (i.e. PR comments)
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
           action: "upload"
-          ###### Repository/Build Configurations - These values can be configured to match your app requirements. ######
-          # For more information regarding Static Web App workflow configurations, please visit: https://aka.ms/swaworkflowconfig
-          # app_location: "./apps" # App source code path
-          app_location: "apps/portal" # App source code path
-          api_location: "" # Api source code path - optional
-          # output_location: "build" # Built app content directory - optional
-          output_location: "" # Built app content directory - optional (vacío para Next.js standalone)
-          ###### End of Repository/Build Configurations ######
+          app_location: "apps/portal"
+          api_location: ""
+          output_location: ""
+          skip_app_build: true
+          app_artifact_location: "apps/portal/.next/standalone"
 
   close_pull_request_job:
     if: github.event_name == 'pull_request' && github.event.action == 'closed'
