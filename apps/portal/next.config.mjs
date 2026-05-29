@@ -1,6 +1,5 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  output: 'standalone', //aagrego linea nueva by Andres
   transpilePackages: ['@mesa-servicio/shared'],
   async rewrites() {
     return [
